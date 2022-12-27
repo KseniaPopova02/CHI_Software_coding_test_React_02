@@ -1,5 +1,9 @@
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import Button from "../_shared/Button/Button";
+import LoanModal from "./LoanModal";
+import { useState } from "react";
+import { numberWithCommas } from "../../utils";
 
 //Loans style
 const LoanWrapper = styled.div`
@@ -7,7 +11,7 @@ const LoanWrapper = styled.div`
   padding: 32px;
   border-radius: 20px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   margin-bottom: 60px;
   &:not(:first-child) {
     margin-top: 32px;
@@ -24,7 +28,7 @@ const LoanWrapper = styled.div`
 const LoansTitle = styled.h4`
   font-size: 25px;
   line-height: 30px;
-  padding-bottom: 16px;
+
   font-weight: 600;
   @media (max-width: 590px) {
     font-size: 22px;
@@ -36,75 +40,45 @@ const LoansSubtitle = styled.div`
     font-size: 16px;
   }
 `;
-//LoansBtnWrapper style
-const LoansBtnWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-//LoansInvest style
-const LoansInvest = styled.p`
-  font-size: 16px;
-  font-weight: 600;
-  color: #51a571;
-  text-align: end;
-  padding-bottom: 13px;
-  @media (max-width: 590px) {
-    font-size: 13px;
-  }
-  @media (max-width: 450px) {
-    text-align: start;
-    padding-bottom: 0px;
-  }
-`;
-//LoansBtn style
-const LoansBtn = styled.button`
-  padding: 16px 32px;
-  border-radius: 5px;
-  text-transform: uppercase;
-  background-color: #f6e308;
-  border: none;
-  font-size: 20px;
-  font-weight: 500;
-  &:hover {
-    background-color: #e5d736;
-  }
-  @media (max-width: 590px) {
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-`;
 
 const Loan = ({
-  loan: { title, tranche, available, annualised_return, ltv },
+  loan: {
+    title,
+    tranche,
+    available,
+    annualised_return,
+    ltv,
+    term_remaining,
+    id,
+  },
+  invest,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <LoanWrapper>
       <LoansTitle>{title}</LoansTitle>
       <LoansSubtitle>
         <p>tranche: {tranche}</p>
-        <p>available: {`${available}$`}</p>
+        <p>available: {`${numberWithCommas(available)}$`}</p>
         <p>annualised return: {annualised_return}</p>
         <p>ltv: {ltv}</p>
       </LoansSubtitle>
-
-      {/* <LoansBtnWrapper>
-        {props.loan.invested > 0 && <LoansInvest>Invested</LoansInvest>}
-
-        <LoansBtn
-          onClick={() => {
-            setShowPopup(!showPopup);
-          }}
-        >
-          Invest
-        </LoansBtn>
-      </LoansBtnWrapper>
-      <LoanPopup
-        loan={props.loan}
-        show={showPopup}
-        setShowPopup={setShowPopup}
-        changeInvestedValue={props.changeInvestedValue}
-      /> */}
+      <Button onClick={toggleModal}>Invest</Button>
+      {isOpen && (
+        <LoanModal
+          invest={invest}
+          onClose={toggleModal}
+          title={title}
+          available={available}
+          endsIn={term_remaining}
+          id={id}
+        />
+      )}
     </LoanWrapper>
   );
 };
@@ -118,5 +92,7 @@ Loan.propTypes = {
     available: PropTypes.string,
     annualised_return: PropTypes.string,
     ltv: PropTypes.string,
+    id: PropTypes.string,
   }).isRequired,
+  invest: PropTypes.func.isRequired,
 };

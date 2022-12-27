@@ -9,7 +9,7 @@
       "term_remaining": "864000",
       "ltv": "48.80",
       "amount": "85,754",
-      "invested": 0
+      "amountOfInvestment": 0
     },
     {
       "id": "5",
@@ -20,7 +20,7 @@
       "term_remaining": "1620000",
       "ltv": "48.80",
       "amount": "85,754",
-      "invested": 0
+      "amountOfInvestment": 0
     },
     {
       "id": "12",
@@ -31,7 +31,7 @@
       "term_remaining": "879000",
       "ltv": "48.80",
       "amount": "85,754",
-      "invested": 0
+      "amountOfInvestment": 0
     }
   ]
 }

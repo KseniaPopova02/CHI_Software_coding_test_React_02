@@ -38,6 +38,7 @@ const Total = styled.div`
 
 const LoanContainer = styled.div`
   padding: 32px 64px;
+  max-width: 950px;
   @media (max-width: 497px) {
     padding: 32px 40px;
   }
@@ -59,6 +60,20 @@ const LoanList = () => {
     [loansData]
   );
 
+  const invest = (id, amount) => {
+    const updatedLoansData = loansData.map((loan) => {
+      if (id === loan.id) {
+        return {
+          ...loan,
+          available: `${Number(loan.available.replace(",", "")) - amount}`,
+          amountOfInvestment: loan.amountOfInvestment + 1,
+        };
+      }
+      return loan;
+    });
+    setLoansData(updatedLoansData);
+  };
+
   return (
     <>
       <HeaderContainer>
@@ -66,7 +81,7 @@ const LoanList = () => {
       </HeaderContainer>
       <LoanContainer>
         {loansData.map((loan) => (
-          <Loan loan={loan} key={loan.id} />
+          <Loan invest={invest} loan={loan} key={loan.id} />
         ))}
         <Total>
           <p>Total amount available for investment:</p>
