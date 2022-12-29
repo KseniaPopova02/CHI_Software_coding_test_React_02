@@ -19,6 +19,7 @@ const ModalSubTitle = styled.h3`
 const InvestInput = styled.input`
   width: 100%;
   padding: 16px 32px;
+  margin-right: 30px;
   border: 1px solid rgba(48, 50, 71, 0.1);
   border-radius: 5px;
   text-align: left;
@@ -28,6 +29,15 @@ const InvestInput = styled.input`
   @media (max-width: 1040px) {
     margin-bottom: 10px;
     padding: 10px 20px;
+  }
+`;
+
+const ModalForm = styled.form`
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+  @media (max-width: 1040px) {
+    flex-direction: column;
   }
 `;
 const isValidInvest = (available, investValue) =>
@@ -40,7 +50,8 @@ const LoanModal = ({ title, available, endsIn, onClose, invest, id }) => {
     setInvestValue(e.target.value);
   };
 
-  const handleInvest = () => {
+  const handleInvest = (e) => {
+    e.preventDefault();
     if (isValidInvest(available, investValue)) {
       invest(id, investValue);
       onClose();
@@ -49,16 +60,26 @@ const LoanModal = ({ title, available, endsIn, onClose, invest, id }) => {
     alert("You don't have enough money:(");
   };
 
+  const timeRemainingNum = Math.ceil(Number(endsIn) / 86400);
+  const timeRemaining = `${timeRemainingNum} days`;
+
   return (
     <Modal onClose={onClose}>
       <ModalContent>
         <ModalTitle>Invest in Loan</ModalTitle>
         <p>{title}</p>
         <p>Amount available: {numberWithCommas(available)}$</p>
-        <p>Loan ends in: {endsIn}</p>
+        <p>Loan ends in: {timeRemaining}</p>
         <ModalSubTitle>Investment amount</ModalSubTitle>
-        <InvestInput onChange={handleChange} value={investValue} />
-        <Button onClick={handleInvest}>Invest</Button>
+        <ModalForm onSubmit={handleInvest}>
+          <InvestInput
+            type="number"
+            placeholder="1,000"
+            onChange={handleChange}
+            value={investValue}
+          />
+          <Button type="submit">Invest</Button>
+        </ModalForm>
       </ModalContent>
     </Modal>
   );

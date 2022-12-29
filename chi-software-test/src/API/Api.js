@@ -15,27 +15,13 @@ class Api {
     return Api.request(path);
   }
 
-  static post(path, body) {
-    return Api.request(path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    });
-  }
-  static delete(path, id) {
-    return Api.request(`${path}/${id}`, {
-      method: "DELETE",
-    });
-  }
-  static patch(path, id, change) {
+  static patch(path, id, body) {
     return Api.request(`${path}/${id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(change),
+      body: JSON.stringify(body),
     });
   }
 }

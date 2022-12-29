@@ -42,6 +42,7 @@ const CrossIcon = styled.span`
   position: absolute;
   top: 40px;
   right: 40px;
+  font-size: 30px;
 
   ::before {
     content: "x";

@@ -61,17 +61,24 @@ const LoanList = () => {
   );
 
   const invest = (id, amount) => {
-    const updatedLoansData = loansData.map((loan) => {
-      if (id === loan.id) {
-        return {
-          ...loan,
-          available: `${Number(loan.available.replace(",", "")) - amount}`,
-          amountOfInvestment: loan.amountOfInvestment + 1,
-        };
-      }
-      return loan;
+    const loanToInvest = loansData.find((loan) => id === loan.id);
+    const fieldsToUpdate = {
+      available: `${Number(loanToInvest.available.replace(",", "")) - amount}`,
+      amountOfInvestment: loanToInvest.amountOfInvestment + 1,
+    };
+    Api.patch(ALL_LOANS, id, fieldsToUpdate).then((updatedLoan) => {
+      const updatedLoansData = loansData.map((loan) => {
+        if (updatedLoan.id === loan.id) {
+          return updatedLoan;
+        }
+        return loan;
+      });
+      setLoansData(updatedLoansData);
     });
-    setLoansData(updatedLoansData);
+
+    // Api.patch(ALL_LOANS, id, {available:}).then(() => {
+    //
+    // });
   };
 
   return (

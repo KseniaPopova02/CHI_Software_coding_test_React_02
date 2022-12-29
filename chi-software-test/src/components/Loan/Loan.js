@@ -5,13 +5,12 @@ import LoanModal from "./LoanModal";
 import { useState } from "react";
 import { numberWithCommas } from "../../utils";
 
-//Loans style
 const LoanWrapper = styled.div`
   border: 1px solid rgba(48, 50, 71, 0.1);
   padding: 32px;
   border-radius: 20px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   margin-bottom: 60px;
   &:not(:first-child) {
     margin-top: 32px;
@@ -24,7 +23,7 @@ const LoanWrapper = styled.div`
     flex-direction: column;
   }
 `;
-//LoansTitle style
+
 const LoansTitle = styled.h4`
   font-size: 25px;
   line-height: 30px;
@@ -34,10 +33,29 @@ const LoansTitle = styled.h4`
     font-size: 22px;
   }
 `;
-//LoansSubtitle
+
 const LoansSubtitle = styled.div`
   @media (max-width: 590px) {
     font-size: 16px;
+  }
+`;
+
+const BtnWrapper = styled.div`
+  margin: auto 0;
+`;
+
+const LoansInvest = styled.p`
+  font-size: 16px;
+  font-weight: 600;
+  color: #51a571;
+  text-align: end;
+  padding-bottom: 13px;
+  @media (max-width: 590px) {
+    font-size: 13px;
+  }
+  @media (max-width: 450px) {
+    text-align: start;
+    padding-bottom: 0px;
   }
 `;
 
@@ -50,6 +68,7 @@ const Loan = ({
     ltv,
     term_remaining,
     id,
+    amountOfInvestment,
   },
   invest,
 }) => {
@@ -61,24 +80,29 @@ const Loan = ({
 
   return (
     <LoanWrapper>
-      <LoansTitle>{title}</LoansTitle>
-      <LoansSubtitle>
-        <p>tranche: {tranche}</p>
-        <p>available: {`${numberWithCommas(available)}$`}</p>
-        <p>annualised return: {annualised_return}</p>
-        <p>ltv: {ltv}</p>
-      </LoansSubtitle>
-      <Button onClick={toggleModal}>Invest</Button>
-      {isOpen && (
-        <LoanModal
-          invest={invest}
-          onClose={toggleModal}
-          title={title}
-          available={available}
-          endsIn={term_remaining}
-          id={id}
-        />
-      )}
+      <div>
+        <LoansTitle>{title}</LoansTitle>
+        <LoansSubtitle>
+          <p>tranche: {tranche}</p>
+          <p>available: {`${numberWithCommas(available)}$`}</p>
+          <p>annualised return: {annualised_return}</p>
+          <p>ltv: {ltv}</p>
+        </LoansSubtitle>
+      </div>
+      <BtnWrapper>
+        {amountOfInvestment > 0 && <LoansInvest>Invested</LoansInvest>}
+        <Button onClick={toggleModal}>Invest</Button>
+        {isOpen && (
+          <LoanModal
+            invest={invest}
+            onClose={toggleModal}
+            title={title}
+            available={available}
+            endsIn={term_remaining}
+            id={id}
+          />
+        )}
+      </BtnWrapper>
     </LoanWrapper>
   );
 };
