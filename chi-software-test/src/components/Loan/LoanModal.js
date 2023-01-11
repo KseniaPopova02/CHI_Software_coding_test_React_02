@@ -40,6 +40,7 @@ const ModalForm = styled.form`
     flex-direction: column;
   }
 `;
+
 const isValidInvest = (available, investValue) =>
   Number(available.replace(",", "")) - investValue >= 0;
 
